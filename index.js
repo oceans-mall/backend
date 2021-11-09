@@ -7,7 +7,9 @@ const authRoute = require("./routes/auth")
 
 dotenv.config();
 
-
+app.get("/", (req, res) => {
+    res.send("Working")
+})
 app.use(express.json())
 app.use("/api/auth", authRoute )
 app.use("/api/user", userRoute)
