@@ -1,13 +1,10 @@
 const router = require("express").Router();
 const User = require("../models/Users");
 const CryptoJs = require("crypto-js");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const Profile = require("../models/Profile");
 
 
-//TEST REQUEST
-router.get("/home", async (req, res) => {
-  res.send("Working well now")
-})
 
 //REGISTER
 router.post("/register", async (req, res) => {
@@ -27,6 +24,20 @@ router.post("/register", async (req, res) => {
   }
 });
 
+//CREATE FISHERMAN PROFILE
+router.post("/profile", async (req, res) => {
+  const { name, location, age,gender, contact } = req.body;
+
+  const newProfile = new Profile({
+    name,location,age,gender,contact
+  })
+  try {
+    const savedProfile = await newProfile.save();
+    res.status(200).json(savedProfile)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+})
 
 //LOGIN
 router.post("/login", async (req, res) => {
@@ -44,7 +55,8 @@ router.post("/login", async (req, res) => {
 
         const accessToken = jwt.sign({
             id: user._id,
-            isAmin: user.isAdmin
+            isAmin: user.isAdmin,
+            isAgent: user.isAgent
         },
             process.env.JWT_SEC,{
                 expiresIn: "2d"

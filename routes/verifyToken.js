@@ -25,6 +25,14 @@ const verifyTokenAuthorization = (req, res, next) => {
     })
 }
 
+//generate token for agent
+const verifyTokenAndAgent = (req, res, next) => {
+    verifyToken((req, res, () => {
+        req.user.isAgent ? next()
+        : res.status(4003).json("Not an agent")
+    }))
+}
+
 const verifyTokenAndAdmin = (req, res, next) => {
     verifyToken(req, res, () => {
         req.user.isAdmin ? next() 
