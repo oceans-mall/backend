@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken")
 router.get("/home", async (req, res) => {
   res.send("Working well now")
 })
+
 //REGISTER
 router.post("/register", async (req, res) => {
   const { username, email, phone } = req.body;
