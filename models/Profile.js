@@ -5,7 +5,7 @@ const ProfileSchema = new mongoose.Schema({
     location:{type: String, required:true},
     age: {type: Number, required: true},
     contact: {type: Number, required:true, unique:true},
-    gender: ["Male", "Female"],
+    gender: {type: Array},
 }, {timestamps:true})
 
 module.exports = mongoose.model("Profile", ProfileSchema)

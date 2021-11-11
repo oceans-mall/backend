@@ -1,6 +1,6 @@
 const router = require("express").Router()
 const User = require("../models/Users")
-const {verifyTokenAuthorization, verifyTokenAndAdmin} = require('./verifyToken')
+const {verifyTokenAuthorization, verifyTokenAndAdmin,} = require('./verifyToken')
 
 
 //UPDATE USER
@@ -50,6 +50,16 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
     try {
         const users = query ? await User.find().sort({_id: -1}).limit(10) : await User.find()
         res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+//GET ALL FISHER-FOLKS
+router.get("/profile", async (req, res) => {
+    try {
+        const fisherman = await Profile.find()
+        res.status(200).json(fisherman)
     } catch (err) {
         res.status(500).json(err)
     }

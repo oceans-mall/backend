@@ -42,5 +42,6 @@ const verifyTokenAndAdmin = (req, res, next) => {
 module.exports ={
     verifyToken,
     verifyTokenAuthorization,
-    verifyTokenAndAdmin
+    verifyTokenAndAdmin,
+    verifyTokenAndAgent
 }
