@@ -79,7 +79,7 @@ router.post("/login", async (req, res) => {
             user.password,
             process.env.PASS_SEC
         )
-        const initialPswd = hashedPassword.toString(CryptoJS.enc.utf8)
+        const initialPswd = hashedPassword.toString(CryptoJS.enc.Utf8)
         initialPswd != req.body.password && res.status(403).json("incorrect password")
 
         const accesstoken = jwt.sign({
