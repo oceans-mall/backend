@@ -25,14 +25,23 @@ const verifyTokenAuthorization = (req, res, next) => {
     })
 }
 
-//generate token for agent
+//token for agent
 const verifyTokenAndAgent = (req, res, next) => {
     verifyToken((req, res, () => {
         req.user.isAgent ? next()
         : res.status(4003).json("Not an agent")
     }))
 }
-
+//general token for agent and admin
+const verifyTokenAgentAndAdmin = (req, res, next) => {
+    verifyToken( req, res, () => {
+        if(req.user.isAdmin || req.user.isAgent){
+            next();
+        }else{
+            res.status(403).json("Not allowed")
+        }
+    })
+}
 const verifyTokenAndAdmin = (req, res, next) => {
     verifyToken(req, res, () => {
         req.user.isAdmin ? next() 
@@ -43,5 +52,6 @@ module.exports ={
     verifyToken,
     verifyTokenAuthorization,
     verifyTokenAndAdmin,
-    verifyTokenAndAgent
+    verifyTokenAndAgent,
+    verifyTokenAgentAndAdmin
 }
