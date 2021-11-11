@@ -2,9 +2,7 @@ const router = require("express").Router()
 const User = require("../models/Users")
 const Profile = require("../models/Profile")
 const CryptoJS = require("crypto-js")
-const {verifyTokenAuthorization, verifyTokenAndAdmin, verifyTokenAndAgent,} = require('./verifyToken')
-const Users = require("../models/Users")
-const jwt = require('jsonwebtoken')
+const {verifyTokenAuthorization, verifyTokenAndAdmin, verifyTokenAgentAndAdmin,} = require('./verifyToken')
 
 
 //UPDATE USER
@@ -60,7 +58,7 @@ router.get("/",verifyTokenAndAdmin, async (req, res) => {
 })
 
 //GET ALL FISHER-FOLKS
-router.get("/profile",verifyTokenAndAgent, async (req, res) => {
+router.get("/profile",verifyTokenAgentAndAdmin, async (req, res) => {
     const query = req.query.new
     try {
         const fisherman = query ? await Profile.find().sort({_id: -1}).limit(10) : await Profile.find()
@@ -69,31 +67,5 @@ router.get("/profile",verifyTokenAndAgent, async (req, res) => {
         res.status(500).json(err)
     }
 })
-//login user
-router.post("/login", async (req, res) => {
-    try {
-        const user = await Users.findOne({username: req.body.username})
-        !user && res.status(200).json("user not found");
 
-        const hashedPassword = CryptoJS.AES.decrypt(
-            user.password,
-            process.env.PASS_SEC
-        )
-        const initialPswd = hashedPassword.toString(CryptoJS.enc.Utf8)
-        initialPswd != req.body.password && res.status(403).json("incorrect password")
-
-        const accesstoken = jwt.sign({
-            id: user._id,
-            isAdmin: user._isAdmin,
-            isAgent: user._isAgent
-        },
-            process.env.JWT_SEC,
-            {expiresIn: "1d"}
-        )
-        const {password, ...others} = user._doc;
-        res.status(200).json({...others, accesstoken})
-    } catch (err) {
-        res.status(500).json(err)
-    }
-})
 module.exports = router
