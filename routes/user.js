@@ -56,7 +56,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 })
 
 //GET ALL FISHER-FOLKS
-router.get("/profile", async (req, res) => {
+router.post("/profile", async (req, res) => {
     try {
         const fisherman = await Profile.find()
         res.status(200).json(fisherman)
