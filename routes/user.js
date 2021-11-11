@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const User = require("../models/Users")
+const Profile = require("../models/Profile")
 const {verifyTokenAuthorization, verifyTokenAndAdmin,} = require('./verifyToken')
 
 
@@ -55,11 +56,11 @@ router.get("/", async (req, res) => {
     }
 })
 
-
 //GET ALL FISHER-FOLKS
-router.post("/profile", async (req, res) => {
+router.get("/profile", async (req, res) => {
+    const query = req.query.new
     try {
-        const fisherman = await Profile.find()
+        const fisherman = query ? await Profile.find().sort({_id: -1}).limit(10) : await Profile.find()
         res.status(200).json(fisherman)
     } catch (err) {
         res.status(500).json(err)
