@@ -47,7 +47,7 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 })
 //GET ALL USER
-router.get("/",verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
     const query = req.query.new
     try {
         const users = query ? await User.find().sort({_id: -1}).limit(10) : await User.find()
