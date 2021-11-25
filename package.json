@@ -1,5 +1,5 @@
 {
-  "name": "oceansmall-backend",
+  "name": "pinwheel",
   "version": "1.0.0",
   "description": "oceansmall-mobileapp",
   "main": "index.js",
@@ -15,8 +15,5 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.14"
-  },
-  "engines":{
-    "node":"14.17.1"
   }
 }
