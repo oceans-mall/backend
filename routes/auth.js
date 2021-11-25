@@ -2,7 +2,6 @@ const router = require("express").Router();
 const User = require("../models/Users");
 const CryptoJs = require("crypto-js");
 const jwt = require("jsonwebtoken");
-const Profile = require("../models/Profile");
 
 //REGISTER
 router.post("/register", async (req, res) => {
@@ -15,27 +14,15 @@ router.post("/register", async (req, res) => {
     password: CryptoJs.AES.encrypt(req.body.password, process.env.PASS_SEC),
   });
   try {
-    const savedUser = await newUser.save();
-    res.status(200).json(savedUser);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//CREATE FISHERMAN PROFILE
-router.post("/profile", async (req, res) => {
-  const { name, location, age, gender, contact } = req.body;
-
-  const newProfile = new Profile({
-    name,
-    location,
-    age,
-    gender,
-    contact,
-  });
-  try {
-    const savedProfile = await newProfile.save();
-    res.status(200).json(savedProfile);
+    //check if email exist
+    if(req.body.email !== await User.findOne({email: req.body.email})){
+      const savedUser = await newUser.save();
+      res.status(200).json(savedUser);
+    }
+    else{
+      res.status(403).json('Email exist')
+    }
+    
   } catch (err) {
     res.status(500).json(err);
   }
@@ -72,5 +59,7 @@ router.post("/login", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+//LOGOUT
 
 module.exports = router;

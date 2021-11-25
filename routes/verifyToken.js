@@ -29,7 +29,7 @@ const verifyTokenAuthorization = (req, res, next) => {
 const verifyTokenAndAgent = (req, res, next) => {
     verifyToken((req, res, () => {
         req.user.isAgent ? next()
-        : res.status(4003).json("Not an agent")
+        : res.status(403).json("Not an agent")
     }))
 }
 //general token for agent and admin
@@ -42,6 +42,7 @@ const verifyTokenAgentAndAdmin = (req, res, next) => {
         }
     })
 }
+//token for admin
 const verifyTokenAndAdmin = (req, res, next) => {
     verifyToken(req, res, () => {
         req.user.isAdmin ? next() 

@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 const TradeSchema = new mongoose.Schema(
     {
-        useId: {type: String, required:true, unique:true},
-        categories: {type: Array},
+        userId: {type: String, required:true, unique:true},
+        folksName: {type: String, required:true},
+        type: {type: Array},
         source: {type: Array},
         price: {type: Number, required:true},
         quantity: {type: Number, required:true},

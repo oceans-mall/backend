@@ -56,6 +56,16 @@ router.get("/",verifyTokenAndAdmin, async (req, res) => {
         res.status(500).json(err)
     }
 })
+//GET FISHER FOLK
+router.get("/find/:id", verifyTokenAgentAndAdmin,async (req, res) => {
+    try {
+        const folk = await Profile.findById(req.params.id)
+        const { password, ...others } = folk._doc;
+        res.status(200).json(others)
+    } catch (err) {
+        res.status(403).json(err)
+    }
+})
 
 //GET ALL FISHER-FOLKS
 router.get("/profile",verifyTokenAgentAndAdmin, async (req, res) => {
