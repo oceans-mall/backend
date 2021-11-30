@@ -2,7 +2,7 @@ const router = require("express").Router();
 const User = require("../models/Users");
 const CryptoJs = require("crypto-js");
 const jwt = require("jsonwebtoken");
-
+const { verifyToken } = require("./verifyToken")
 //REGISTER
 router.post("/register", async (req, res) => {
   const { username, email, phone } = req.body;
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
       },
       process.env.JWT_SEC,
       {
-        expiresIn: "2d",
+        expiresIn: "2d", 
       }
     );
     const { password, ...others } = user._doc;
@@ -61,5 +61,11 @@ router.post("/login", async (req, res) => {
 });
 
 //LOGOUT
+router.get("/logout",verifyToken , (req, res) => {
+  req.user.deleteToken(req.token, (err, user) => {
+    err && res.status(403).json(err);
+  })
+  res.status(200).redirect("/")
+})
 
 module.exports = router;
