@@ -78,4 +78,19 @@ router.get("/profile",verifyTokenAgentAndAdmin, async (req, res) => {
     }
 })
 
+//UPDATE FISHERFOLK
+router.put("/update", verifyTokenAgentAndAdmin, async (req, res) => {
+    try {
+        const update = await Profile.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        },
+            {
+                new: true
+            }
+        )
+        res.status(200).json(update)
+    } catch (error) {
+        res.status(403).json(error)
+    }
+})
 module.exports = router
